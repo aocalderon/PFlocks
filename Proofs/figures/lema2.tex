@@ -1,0 +1,96 @@
+\documentclass[multi=page, svgnames, border=0.5cm]{standalone}
+\usepackage[svgnames]{xcolor}
+\usepackage{tikz}
+\usepackage{tikz-dimline}
+\usepackage{ifthen}
+
+\usetikzlibrary{shapes.misc, arrows, calc, decorations.markings}
+
+\tikzset{    
+  point/.style={ draw, scale=0.6, circle, fill },
+  label/.style={ scale=1.5, Gray, opacity=0.65 },
+  center/.style={ draw, ultra thin, scale=0.5, cross out }
+}
+\definecolor{light-gray}{gray}{0.85}
+
+\begin{document}  
+\newcommand{\POINTS}{0/0/1/Blue,0/3/2/Purple,8/11/3/Orange,5/-1.5/4/Green}
+\def\EPSILON{10}
+
+\begin{page}
+  \begin{tikzpicture}[
+    declare function={
+      dist2(\xa,\ya,\xb,\yb) = pow(\xa - \xb, 2.0) + pow(\ya - \yb, 2.0);
+      dist(\xa,\ya,\xb,\yb) = sqrt(dist2(\xa,\ya,\xb,\yb));
+    }]
+
+    \draw[step=1, very thin, light-gray, dashed] (-10,-10) grid (11,11);
+    
+    \foreach \xa/\ya/\i/\c in \POINTS
+    {
+      \foreach \xb/\yb/\j in \POINTS
+      {
+        \pgfmathtruncatemacro{\D}{dist(\xa,\ya,\xb,\yb)};
+        \pgfextra{
+          \ifthenelse{\i < \j}{
+            \coordinate (A) at (\xa,\ya);
+            \coordinate (B) at (\xb,\yb);
+            \draw [|<->|,>=latex, shorten <=7pt, shorten >=7pt]
+              (A) -- (B) node[midway, fill=White] {\small $\D$};
+          }{
+          }
+        }
+      }
+      \node[point, color=\c] at (\xa, \ya) {};
+    }
+  \end{tikzpicture}
+\end{page}
+
+\begin{page}
+  \begin{tikzpicture}[
+    declare function={
+      dist2(\xa,\ya,\xb,\yb) = pow(\xa - \xb, 2.0) + pow(\ya - \yb, 2.0);
+      dist(\xa,\ya,\xb,\yb) = sqrt(dist2(\xa,\ya,\xb,\yb));
+      r2(\EPSILON) = pow(\EPSILON / 2.0, 2.0);
+      root(\EPSILON, \DD) = sqrt(abs(4.0 * (r2(\EPSILON) / \DD) - 1.0));
+      h1(\X, \Y, \root, \xb) = ((\X + (\Y * \root)) / 2.0) + \xb;
+      k1(\X, \Y, \root, \yb) = ((\Y - (\X * \root)) / 2.0) + \yb;
+      h2(\X, \Y, \root, \xb) = ((\X - (\Y * \root)) / 2.0) + \xb;
+      k2(\X, \Y, \root, \yb) = ((\Y + (\X * \root)) / 2.0) + \yb;
+    }]
+
+    \draw[step=1, very thin, light-gray, dashed] (-10,-10) grid (11,11);
+    
+    \foreach \xa/\ya/\i/\c in \POINTS
+    {
+      \foreach \xb/\yb/\j in \POINTS
+      {
+        \pgfmathtruncatemacro{\D}{dist(\xa,\ya,\xb,\yb)};
+        \pgfextra{
+          \ifthenelse{\D<\EPSILON \AND \i<\j}{
+            \draw[thin,color=Magenta,dotted] (\xa,\ya) -- (\xb,\yb);
+            \pgfmathsetmacro{\X}{\xa - \xb};
+            \pgfmathsetmacro{\Y}{\ya - \yb};
+            \pgfmathsetmacro{\DD}{dist2(\xa,\ya,\xb,\yb)};
+            \pgfmathsetmacro{\root}{root(\EPSILON,\DD)};
+
+            \pgfmathsetmacro{\ha}{h1(\X,\Y, \root, \xb)};
+            \pgfmathsetmacro{\ka}{k1(\X,\Y, \root, \yb)};
+            \node[center] at (\ha, \ka) {};
+            \draw[Blue, dashed] (\ha, \ka) circle (\EPSILON / 2.0);
+
+            \pgfmathsetmacro{\hb}{h2(\X,\Y, \root, \xb)};
+            \pgfmathsetmacro{\kb}{k2(\X,\Y, \root, \yb)};
+            \node[center] at (\hb, \kb) {};
+            \draw[Blue, dashed] (\hb, \kb)  circle (\EPSILON / 2.0);
+
+          }{
+          }
+        }
+      }
+      \node[point,color=\c] at (\xa, \ya) {};
+    }
+  \end{tikzpicture}
+\end{page}
+
+\end{document}
