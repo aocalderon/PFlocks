@@ -1,0 +1,58 @@
+%% bare_jrnl.tex
+%% V1.4b
+%% 2015/08/26
+%% by Michael Shell
+%% see http://www.michaelshell.org/
+%% for current contact information.
+%%
+%% This is a skeleton file demonstrating the use of IEEEtran.cls
+%% (requires IEEEtran.cls version 1.8b or later) with an IEEE
+%% journal paper.
+%%
+
+\documentclass[journal,onecolumn]{IEEEtran}
+%
+% If IEEEtran.cls has not been installed into the LaTeX system files,
+% manually specify the path to it like:
+% \documentclass[journal]{../sty/IEEEtran}
+
+\usepackage[pdftex]{graphicx}
+\usepackage{amsmath}
+\usepackage{algorithmic}
+\usepackage{cite}
+%\usepackage{array}
+%\usepackage[caption=false,font=normalsize,labelfont=sf,textfont=sf]{subfig}
+%\usepackage{url}
+
+\hyphenation{op-tical net-works semi-conduc-tor}
+
+\begin{document}
+% \title{_}
+% \author{_}
+% 
+% \maketitle
+
+\section{Methods}
+%\IEEEPARstart{T}{his} 
+This section explains two alternative methodologies to find moving flock patterns in large spatio-temporal datasets using modern distributed frameworks to divide and parallize the work load \cite{vieira_-line_2009}.
+
+\subsection{Subsection Heading Here}
+Subsection text here.
+
+\subsubsection{Subsubsection Heading Here}
+Subsubsection text here.
+
+%\begin{figure}[!t]
+%\centering
+%\includegraphics[width=2.5in]{myfigure}
+% where an .eps filename suffix will be assumed under latex, 
+% and a .pdf suffix will be assumed for pdflatex; or what has been declared
+% via \DeclareGraphicsExtensions.
+%\caption{Simulation results for the network.}
+%\label{fig_sim}
+%\end{figure}
+
+\bibliographystyle{IEEEtran}
+\bibliography{../pflocks.bib}
+
+\end{document}
