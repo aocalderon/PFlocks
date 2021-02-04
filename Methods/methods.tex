@@ -34,23 +34,21 @@
 
 \section{Methods}
 %\IEEEPARstart{T}{his} 
-This section explains two alternative methodologies to find moving flock patterns in large spatio-temporal datasets using modern distributed frameworks to divide and parallize the work load \cite{vieira_-line_2009}.
+This section explains two alternative methodologies to find moving flock patterns in large spatio-temporal datasets using modern distributed frameworks to divide and parallize the work load.
 
-\subsection{Subsection Heading Here}
-Subsection text here.
+The first alternative follows closely the steps explained at \cite{vieira_-line_2009}.  At this work, the authors proposed the Basic Flock Evaluation (BFE) algorithm to find flock pattern on trajectories databases.  The details of the algorithm can be accessed at the source but figure \ref{fig:flowchart1} explains schematically the work flow where we can identify 4 general steps.
 
-\subsubsection{Subsubsection Heading Here}
-Subsubsection text here.
+\begin{enumerate}
+ \item Pair finding:  Using the $\varepsion$ parameter, the algorithm query the set of points to get the set of pairs which laid at a maximum distance of $\varepsilon$ units.  Usually, it is a distance self-join operation over the set of points using $\varepsilon$ as the distance parameter.  The query also pays attention to do not return pair duplicates.  Pair between point $p_1$ and $p_2$ is the same that pair between $p_2$ and $p_1$ and just one of them should be reported (the id of each point is used to filter duplicates).
+\end{enumerate}
 
-%\begin{figure}[!t]
-%\centering
-%\includegraphics[width=2.5in]{myfigure}
-% where an .eps filename suffix will be assumed under latex, 
-% and a .pdf suffix will be assumed for pdflatex; or what has been declared
-% via \DeclareGraphicsExtensions.
-%\caption{Simulation results for the network.}
-%\label{fig_sim}
-%\end{figure}
+
+
+\begin{figure}
+    \centering
+    \includegraphics{figures/flowchart1}
+    \caption{General steps in BFE algorithm.}\label{fig:flowchart1}
+\end{figure}
 
 \bibliographystyle{IEEEtran}
 \bibliography{../pflocks.bib}

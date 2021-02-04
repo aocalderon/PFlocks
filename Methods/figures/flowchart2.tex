@@ -28,6 +28,7 @@
         \node [block, below of=disks] (prune) {Prune disks};
         \node [cloud, right of=prune, node distance=4cm] (maximals) {maximal disks};
         % Draw edges
+        \path [line,dashed] (input) -- (graph);
         \path [line] (graph) -- (cliques);
         \path [line] (cliques) -- (filter);
         \path [line] (filter) -- (decide);
@@ -37,7 +38,6 @@
         \path [line] (disks1) |- (disks);
         \path [line] (disks2) |- (disks);
         \path [line] (disks) -- (prune);
-        \path [line,dashed] (input) -- (graph);
         \path [line,dashed] (prune) -- (maximals);
     \end{tikzpicture}
 \end{document}
