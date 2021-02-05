@@ -37,16 +37,24 @@ P7 <- new("partition", id=7, x=7.5,  y=2.5,  width=2.5)
 partitions = c(P1,P2,P3,P4,P5,P6,P7)
 expansion = 1
 
-pointsAndPartitions <- P %>%
+pap <- P %>%
   pmap_dfr(function(...) {
     p <- tibble(...)
     p %>% mutate(
-      P1 = containsWithExpansion(P1, p$x, p$y),
-      P2 = containsWithExpansion(P2, p$x, p$y),
-      P3 = containsWithExpansion(P3, p$x, p$y),
-      P4 = containsWithExpansion(P4, p$x, p$y),
-      P5 = containsWithExpansion(P5, p$x, p$y),
-      P6 = containsWithExpansion(P6, p$x, p$y),
-      P7 = containsWithExpansion(P7, p$x, p$y),
+      PA = containsWithExpansion(P1, p$x, p$y),
+      PB = containsWithExpansion(P2, p$x, p$y),
+      PC = containsWithExpansion(P3, p$x, p$y),
+      PD = containsWithExpansion(P4, p$x, p$y),
+      PE = containsWithExpansion(P5, p$x, p$y),
+      PF = containsWithExpansion(P6, p$x, p$y),
+      PG = containsWithExpansion(P7, p$x, p$y),
     ) 
   })
+
+points = pap %>% 
+  pivot_longer(cols = starts_with("P"), names_to = "part", values_to = "isin") %>% 
+  filter(isin) %>% mutate(coord = paste0(x,"/",y)) %>% select(part, coord) %>%
+  group_by(part) %>% summarize(coords = paste(sort(unique(coord)),collapse=", ")) %>%
+  mutate(lines = paste0("\\newcommand{\\",part,"}{",coords,"}"))
+
+write.table(points %>% select(lines), file = "Ps.txt", row.names = F, col.names = F, quote = F)

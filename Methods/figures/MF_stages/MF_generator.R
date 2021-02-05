@@ -10,18 +10,17 @@ readPoints <- function(filename){
   return(data)
 }
 
-n = 100
 epsilon = 1
 mu = 4
 precision = 0.001
 size = 10
-lim=c(0-epsilon/2, size+epsilon/2)
+gap = 0.35
+lim=c(4 - gap, 11 + gap)
 r2 = (epsilon/2)^2
-P = readPoints("points.dat")
-#x = runif(n, 0, size)
-#y = runif(n, 0, size)
+P = readPoints("partition2.dat")
 x = P$x
 y = P$y
+n = length(x)
 pointset=data.frame(x = x, y = y)
 pointset2 = data.frame(id=1:n, x=x, y=y, t=rep(0,n))
 write.table(pointset2, "sample.tsv", sep="\t", row.names = F, col.names = F)
@@ -53,14 +52,16 @@ computeCenters <- function(x1, y1, x2, y2){
 
 drawCanvas <- function(){
   plot(1, asp=1, axes = F, , xlab = "", ylab = "", type='n', xlim=lim, ylim=lim)
+  drawBorder(5,5,10,10,1)
+  drawBorder(4,4,11,11,5)
 }
 
 drawPoints <-function(){
   points(x, y, pch=21, col=1, bg=1, cex=1)
 }
 
-drawBorder <- function(x1, y1, x2, y2){
-  rect(x1, y1, x2, y2, border = "lightgrey", lty=5, lwd=1)
+drawBorder <- function(x1, y1, x2, y2, lty){
+  rect(x1, y1, x2, y2, border = "darkgrey", lty=lty, lwd=1)
 }
 
 drawPartitions <- function(cells){
@@ -149,35 +150,22 @@ drawDisks <- function(disks){
 
 # Set of points...
 drawCanvas()
-drawBorder(0,0,size,size)
 drawPoints()
-
-# Partitioning points...
-drawCanvas()
-drawBorder(0,0,size,size)
-drawPoints()
-drawPartitions(2)
 
 # Finding pairs...
 drawCanvas()
-drawBorder(0,0,size,size)
 drawPoints()
-drawPartitions(2)
 pairs = drawPairs()
 
 # Computing centers...
 drawCanvas()
-drawBorder(0,0,size,size)
 drawPoints()
-drawPartitions(2)
 drawPairs2(pairs)
 centers = drawCenters()
 
 # Finding disks...
 drawCanvas()
-drawBorder(0,0,size,size)
 drawPoints()
-drawPartitions(2)
 disks = drawCenters2(centers)
 drawDisks(disks)
 
