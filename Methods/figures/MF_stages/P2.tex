@@ -1,4 +1,4 @@
-\documentclass[border=0cm]{standalone}
+\documentclass{standalone}
 \usepackage{tikz}
 \tikzset{
     dot/.style={
@@ -38,5 +38,13 @@
         \foreach \x/\y [count=\k from 0] in \PE { \coordinate[dot] (p\k) at (\x,\y); }
         \foreach \x/\y [count=\k from 0] in \PF { \coordinate[dot] (p\k) at (\x,\y); }
         \foreach \x/\y [count=\k from 0] in \PG { \coordinate[dot] (p\k) at (\x,\y); }
+        
+        \node[scale=1] at (0.25,9.75) {1};
+        \node[scale=1] at (5.25,9.75) {2};
+        \node[scale=1] at (0.25,4.75) {3};
+        \node[scale=1] at (2.75,4.75) {4};
+        \node[scale=1] at (0.25,0.25) {5};
+        \node[scale=1] at (2.75,0.25) {6};
+        \node[scale=1] at (9.75,0.25) {7};
     \end{tikzpicture}
 \end{document}

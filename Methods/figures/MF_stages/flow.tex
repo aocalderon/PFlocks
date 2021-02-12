@@ -1,4 +1,4 @@
-\documentclass[border=0.5cm]{standalone}
+\documentclass{standalone}
 \usepackage{color}
 \usepackage{tikz}
 \usetikzlibrary{shapes,arrows,arrows.meta,fit,positioning}
@@ -41,9 +41,8 @@
             {Finding disks \\ 
             \includegraphics[width=\defaultwidth, page=4]{pflock}};
         \node[stage] (4) [right = of 3] 
-            {Prune disks \\ 
-            %\includegraphics[width=\defaultwidth]{MF_stages/maximals}
-            };
+            {Pruning disks \\ 
+            \includegraphics[width=\defaultwidth, page=5]{pflock}};
                         
         \draw[arrow] (0) -- node[arrow_text]{Points}    (1);
         \draw[arrow] (1) -- node[arrow_text]{Pairs}      (2);

@@ -11,7 +11,7 @@ readPoints <- function(filename){
 }
 
 epsilon = 1
-mu = 4
+mu = 3
 precision = 0.001
 size = 10
 gap = 0.35
@@ -98,7 +98,7 @@ drawPairs2 <- function(pairs){
     y1 = pairs[i,2]
     x2 = pairs[i,3]
     y2 = pairs[i,4]
-    lines(c(x1,x2), c(y1,y2), lwd=2)
+    lines(c(x1,x2), c(y1,y2), lwd=1.5)
   }
 }
 
@@ -121,20 +121,41 @@ drawCenters <- function(){
   return(centers0)
 }
 
-drawCenters2 <- function(centers){
+drawCenters1 <- function(centers){
   data = sqldf("SELECT p1.x AS x1, p1.y AS y1, p2.x AS x2, p2.y AS y2 FROM centers p1 CROSS JOIN pointset p2 ")
   disks0 = data.frame(center=character(), point=character(), stringsAsFactors=FALSE)
+  r = epsilon / 2.0
   for(i in 1:nrow(data)){
     x1 = data[i,1]
     y1 = data[i,2]
     x2 = data[i,3]
     y2 = data[i,4]
     d = distance(x1,y1,x2,y2)
-    if(d <= epsilon/2 && d != 0){
+    if(d <= r && d != 0){
       disks0[nrow(disks0) + 1, ] = list(paste(x1, y1), paste(x2, y2))
     }
   }
-  disks = as_tibble(disks0) %>% group_by(center) %>% tally() %>% filter(n >= mu) %>% 
+  disks = as_tibble(disks0) %>% distinct() %>% group_by(center) %>% tally() %>% 
+    separate(center, c("x", "y"), sep=" ") %>% mutate(x=as.numeric(x), y=as.numeric(y))
+  disks = as.data.frame(disks)
+  return(disks)
+}
+
+drawCenters2 <- function(centers){
+  data = sqldf("SELECT p1.x AS x1, p1.y AS y1, p2.x AS x2, p2.y AS y2 FROM centers p1 CROSS JOIN pointset p2 ")
+  disks0 = data.frame(center=character(), point=character(), stringsAsFactors=FALSE)
+  r = epsilon / 2.0
+  for(i in 1:nrow(data)){
+    x1 = data[i,1]
+    y1 = data[i,2]
+    x2 = data[i,3]
+    y2 = data[i,4]
+    d = distance(x1,y1,x2,y2)
+    if(d <= r && d != 0){
+      disks0[nrow(disks0) + 1, ] = list(paste(x1, y1), paste(x2, y2))
+    }
+  }
+  disks = as_tibble(disks0) %>% distinct() %>% group_by(center) %>% tally() %>% filter(n >= mu) %>% 
     separate(center, c("x", "y"), sep=" ") %>% mutate(x=as.numeric(x), y=as.numeric(y))
   disks = as.data.frame(disks)
   return(disks)
@@ -164,6 +185,13 @@ drawPairs2(pairs)
 centers = drawCenters()
 
 # Finding disks...
+drawCanvas()
+drawPoints()
+drawCenters()
+disks = drawCenters1(centers)
+drawDisks(disks)
+
+# Pruning disks...
 drawCanvas()
 drawPoints()
 disks = drawCenters2(centers)

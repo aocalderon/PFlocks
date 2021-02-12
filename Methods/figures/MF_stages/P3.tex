@@ -61,5 +61,13 @@
         \foreach \x/\y [count=\k from 0] in \PG { \coordinate[dot] (p\k) at (\x+\gap,\y-\gap); }
         \draw[light-gray] (5+\gap,0-\gap) rectangle (10+\gap,5-\gap);
         \draw[light-gray, dashed] (5+\gap-\eps,0-\gap-\eps) rectangle (10+\gap+\eps,5-\gap+\eps);
+        
+        \node[scale=1.5] at (0.25-\gap-\eps,9.75+\gap+\eps) {1};
+        \node[scale=1.5] at (5.25+\gap-\eps,9.75+\gap+\eps) {2};
+        \node[scale=1.5] at (0.25-\gap-\eps-\gap-\dx-\eps,4.75-\gap+\eps) {3};
+        \node[scale=1.5] at (4.75-\gap+\eps,4.75-\gap+\eps) {4};
+        \node[scale=1.5] at (0.25-\gap-\eps-\gap-\dx-\eps,0.25-\gap-\eps-\gap-\dy-\eps) {5};
+        \node[scale=1.5] at (4.75-\gap+\eps,0.25-\gap-\eps-\gap-\dy-\eps) {6};
+        \node[scale=1.5] at (9.75+\gap+\eps,0.25-\gap-\eps) {7};
     \end{tikzpicture}
 \end{document}
