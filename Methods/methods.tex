@@ -64,7 +64,7 @@
 This section explains two alternative methodologies to find moving flock patterns in large spatio-temporal datasets using modern distributed frameworks to divide and parallelize the work load.
 
 \subsection{The BFE algorithm}
-The first alternative follows closely the steps explained at \cite{vieira_2009}.  At this work, the authors proposed the Basic Flock Evaluation (BFE) algorithm to find flock pattern on trajectories databases.  The details of the algorithm can be accessed at the source but figure \ref{fig:flowchart1} explains schematically the work flow where we can identify 4 general steps:
+The first alternative follows closely the steps explained at \cite{vieira_2009}.  In this work, the authors proposed the Basic Flock Evaluation (BFE) algorithm to find flock pattern on trajectories databases.  The details of the algorithm can be accessed at the source but figure \ref{fig:flowchart1} explains schematically the work flow where we can identify 4 general steps:
 
 \begin{enumerate}
     \item Pair finding:  Using the $\varepsilon$ parameter, the algorithm query the set of points to get the set of pairs which laid at a maximum distance of $\varepsilon$ units.  Usually, it is a distance self-join operation over the set of points using $\varepsilon$ as the distance parameter.  The query also pays attention to do not return pair duplicates.  Pair between point $p_1$ and $p_2$ is the same that pair between $p_2$ and $p_1$ and just one of them should be reported (the id of each point is used to filter duplicates).
