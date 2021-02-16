@@ -17,14 +17,22 @@
 % \documentclass[journal]{../sty/IEEEtran}
 
 \usepackage[pdftex]{graphicx}
-\usepackage{amsmath}
-\usepackage{amssymb}
+\usepackage{amsmath,amssymb,amsfonts,amsthm}
 \usepackage{algpseudocode}
 \usepackage{algorithm}
 \usepackage{xpatch}
 \usepackage{cite}
 \usepackage{tikz}
 \usetikzlibrary{shapes, arrows}
+
+\ifCLASSOPTIONcompsoc
+\usepackage[caption=false, font=normalsize, labelfont=sf, textfont=sf]{subfig}
+\else
+\usepackage[caption=false, font=footnotesize]{subfig}
+\fi
+
+\newtheorem{lemma}{Lemma}
+\renewcommand{\IEEEQED}{\IEEEQEDclosed}
 
 %\usepackage{array}
 %\usepackage[caption=false,font=normalsize,labelfont=sf,textfont=sf]{subfig}
@@ -163,21 +171,57 @@ Similarly, figure \ref{fig:FF_stages} illustrates the recursion and how the set 
 \end{figure}
 
 \subsection{Bottlenecks in BFE and possible solutions}
-There are some steps during the execution of BFE which are particularly affected when it deals with very large datasets.  Firstly, we will focus on phase 1 of BFE.  Figure \ref{fig:example}, the steps of this phase are illustrated for a sample dataset.  You can see that the number of centers and disks found is considerable large in comparisson with the final set of valid disks.  Indeed, the finding of centers and posterior operations grows exponentially depending on the number of points and possible pairs (which itself depend on the $\varepsilon$ paramenter).   
+There are some steps during the execution of BFE which are particularly affected when it deals with very large datasets.  Firstly, we will focus on phase 1 of BFE.  In figure \ref{fig:example}, the steps of this phase are illustrated for a sample dataset.  You can see that the number of centers and disks found is considerable large in comparison with the final set of valid disks.  Indeed, the finding of centers and the following operations grows quadratic depending on the number of points and possible pairs (which itself depend on the $\varepsilon$ paramenter).   
+
+\cite{vieira_2009} claims that the number of centers, and consequent disks, to be evaluated is equal to $2\lvert\tau\rvert^2$ where $\tau$ is the number of trajectories.  However, our experience show that there are a large number of duplicate and subset disks which are later pruned in the final stage.  This behaviour is exacerbated no just in very large datasets but also in those with areas with high density of moving entities.
 
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=1\textwidth]{figures/MF_stages/flow}
-    \caption{Example of BFE execution on a sample dataset..}\label{fig:example}
+    \caption{Example of BFE execution on a sample dataset.}\label{fig:example}
 \end{figure}
 
-\subsection{A parallel approach}
+As solution for this issue, we proposed a partition strategy to divide the study area in smaller sections which can be evaluated in parallel.  The strategy has three steps: first, a partition and replication stage, then the flock discovery in each local partition and finally the merge stage where we collect and unify the results.  Let's explain each stage in more detail:
+
+\begin{itemize}
+
+\item Partition and Replication: Figure \ref{fig:partrep} shows a brief example of the partition and replication stage.  Note that it is possible to use different types of spatial indexes (grids, r-tree, quadtree, etc.) to create spatial partitions over the input dataset.  In the case of the example we use a quadtree which creates 7 partitions.  Now, we need to ensure that each partition has access to all the required data to complete the finding of flocks locally.  To accomplish this, all the points laying at $\varepsilon$ distance of the border of its partition are replicated to adjacent partitions.  At the right of figure \ref{fig:partrep},  it can be seen each partition surrounded by a dotted area with the points which need to be copied from its neighbor partitions.  At this point, each partition is ready to be submitted to different nodes for local processing.
+
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=\textwidth]{figures/MF_stages/P123}
     \caption{An example of partitioning and replication on a sample dataset.}\label{fig:partrep}
 \end{figure}
 
+\item Local discovery: Once we have all the data we need at each partition we can run the steps of the phase 1 of the BFE algorithm locally (as were explained on figure \ref{fig:MF_flowchart}).  Actually, you can see that the example of figure \ref{fig:example} visualize the execution using the points of partion 2 of the figure \ref{fig:partrep} as sample example.
+
+\item Merging:  We will show that if the position of a disk's center lies inside of the current partition they will be safe to operate but those located in the expansion zone or outside of it will require special attention.  
+
+Disks with centers in the expansion zone will be repeated in contiguous partitions and lead to duplication.  In addition, it is possible that pairs of points generates disks with centers outside of the expansion zone.  For example, Fig. \ref{subfig:mergeA} illustrates the case.  Disks $a^\prime$ and $b^\prime$ are generated for points in partitions 1 and 2 respectively, however both are located outside of their expansion zone boundaries and we should to avoid to report them twice.  We present lemma \ref{lemma:disks} to show that we can safely remove those kind of disks.
+
+\begin{lemma}\label{lemma:disks}
+A disk with its center lying in the expansion zone or outside of it can be discarded as they will be correctly evaluated by one of the partitions in its neighborhood. 
+\end{lemma}
+
+\begin{proof}
+  In order to support our proof we will define some concepts.  First, we will divide the area of a partition in three zones to clarify our assumptions:  we already talked about the expansion zone as the area beyond the border of a partition (between black line and dotted red line in Fig. \ref{subfig:mergeA}) and a width equal to $\varepsilon$.  The border zone is a strip of width equal to $\varepsilon$ touching the interior border of a cell.  In Fig. \ref{subfig:mergeA} it is compromised by the dotted blue and the black lines.  The safe zone will be the remaining internal area in the partition which is not covered by the border zone.  Second, we will call the contiguous partition with which the current one will replicate a particular disk as the \textit{replicated partition}. In Fig. \ref{subfig:mergeA}, the partition 2 is the replicated partition of partition 1 and vice versa.
+
+  From here, it will be clear that there is a symmetric relation between the disks in a particular zone in the current partition and the circles in its replicated partition.  We can certainly said that if a disk is located in the border zone of the current partition, it will be located in the expansion zone of its replicated partition.  Similarly, any disk with a center lying outside of the expansion zone of the current partition will be located in the safe zone of its replicated partition.  Keeping just the disks with centers lying in the current partition (border or safe zone) will be enough to ensure no lost of information (Fig. \ref{subfig:mergeB}).
+\end{proof}
+
+\begin{figure}[!ht]
+    \centering
+    \subfloat[Disks in current and replicated partitions. \label{subfig:mergeA}]{%
+        \includegraphics[width=0.48\textwidth, page=3]{figures/merge}
+    }
+    \hfill
+    \subfloat[Disks in current and replicated partitions after pruning. \label{subfig:mergeB}]{%
+        \includegraphics[width=0.48\textwidth, page=4]{figures/merge}
+    }
+    \caption{Merging strategy.}\label{fig:merge}
+\end{figure}
+
+\end{itemize}
 
 \newpage 
 
