@@ -17,7 +17,7 @@
     \begin{tikzpicture}[node distance = 2cm, auto]
         % Place nodes
         \node [block] (graph) {Build graph};
-        \node [cloud, left of=graph] (input) {points, $\varepsilon$, $\mu$};
+        \node [cloud, left of=graph, node distance=3cm] (input) {\mathcal{P}, $\varepsilon$, $\mu$};
         \node [block, below of=graph] (cliques) {Compute cliques};
         \node [block, below of=cliques] (filter) {Remove cliques $< \mu$};
         \node [decision, below of=filter] (decide) {Unique MBC encloses clique?};
@@ -26,7 +26,7 @@
         \node [io, below of=traditional] (disks2) {disks2};
         \node [io, below of=decide, node distance=4cm] (disks) {disks1 + disks2};
         \node [block, below of=disks] (prune) {Prune disks};
-        \node [cloud, right of=prune, node distance=4cm] (maximals) {maximal disks};
+        \node [cloud, left of=prune, node distance=3cm] (maximals) {\mathcal{D}};
         % Draw edges
         \path [line,dashed] (input) -- (graph);
         \path [line] (graph) -- (cliques);

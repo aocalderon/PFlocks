@@ -581,18 +581,21 @@
 }
 
 @inproceedings{geng_enumeration_2014,
-  title = {Enumeration of Complete Set of Flock Patterns in Trajectories},
-  isbn = {978-1-4503-3139-5},
-  doi = {10.1145/2676552.2676560},
-  language = {en},
-  timestamp = {2016-12-08T17:11:35Z},
-  urldate = {2016-12-08},
-  publisher = {{ACM Press}},
-  author = {Geng, Xiaoliang and Takagi, Takuya and Arimura, Hiroki and Uno, Takeaki},
-  year = {2014},
-  note = {00004},
-  pages = {53--61},
-  file = {p53-geng.pdf:/home/and/.mozilla/firefox/oz8qllgg.default/zotero/storage/URGRNJU8/p53-geng.pdf:application/pdf}
+author = {Geng, Xiaoliang and Takagi, Takuya and Arimura, Hiroki and Uno, Takeaki},
+title = {Enumeration of Complete Set of Flock Patterns in Trajectories},
+year = {2014},
+isbn = {9781450331395},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/2676552.2676560},
+doi = {10.1145/2676552.2676560},
+abstract = {In this paper, we consider the problem of mining the complete set of spatio-temporal patterns, called maximal-duration flock patterns (Gudmundsson and van Kreveld, Proc. ACM GIS 2006) from massive mobile GPS location streams. Such algorithms are useful for mining and analysis of real-time geographic streams in geographic information systems. Although a polynomial time algorithm exists for finding a maximal-duration flock pattern from a collection of trajectories, it has not been known whether it is possible to find all maximal-duration flock patterns with theoretical guarantee of its computational complexity. For this problem, we present efficient depth-first algorithms for finding all maximal-duration patterns in a collection of trajectories without duplicates that run in polynomial time per discovered pattern using polynomial space in the total size of input trajectories. To achieve the output-sensitive complexity above, our algorithms adopt depth-first search strategy to avoid the use of exponentially large memory. We also propose a speed-up technique using geometric indexes. Finally, we show experimental results on artificial data to evaluate the proposed algorithms.},
+booktitle = {Proceedings of the 5th ACM SIGSPATIAL International Workshop on GeoStreaming},
+pages = {53–61},
+numpages = {9},
+keywords = {pattern mining algorithms, spatio-temporal data, knowledge discovery and databases, geostream mining, GPS-trajectory, data mining},
+location = {Dallas, Texas},
+series = {IWGS '14}
 }
 
 @unpublished{arimura_finding_2014,
@@ -639,19 +642,19 @@
 }
 
 @inproceedings{pellechia_geomesa:_2015-1,
-  title = {{{GeoMesa}}: A Distributed Architecture for Spatio-Temporal Fusion},
-  shorttitle = {{{GeoMesa}}},
-  doi = {10.1117/12.2177233},
-  timestamp = {2016-12-08T17:52:49Z},
-  urldate = {2016-12-08},
-  author = {Hughes, James N. and Annex, Andrew and Eichelberger, Christopher N. and Fox, Anthony and Hulbert, Andrew and Ronquest, Michael},
-  editor = {Pellechia, Matthew F. and Palaniappan, Kannappan and Doucette, Peter J. and Dockstader, Shiloh L. and Seetharaman, Gunasekaran},
-  month = may,
-  year = {2015},
-  note = {00000},
-  pages = {94730F},
-  file = {pdfaccess.pdf:/home/and/.mozilla/firefox/oz8qllgg.default/zotero/storage/TV2QC7NH/pdfaccess.pdf:application/pdf}
-}
+author = {James N. Hughes and Andrew Annex and Christopher N. Eichelberger and Anthony Fox and Andrew Hulbert and Michael Ronquest},
+title = {{GeoMesa: a distributed architecture for spatio-temporal fusion}},
+volume = {9473},
+booktitle = {Geospatial Informatics, Fusion, and Motion Video Analytics V},
+editor = {Matthew F. Pellechia and Kannappan Palaniappan and Peter J. Doucette and Shiloh L. Dockstader and Gunasekaran Seetharaman and Paul B. Deignan},
+organization = {International Society for Optics and Photonics},
+publisher = {SPIE},
+pages = {128 -- 140},
+keywords = {Distributed Computing, Distributed Databases, Accumulo, NoSQL, Geohash, Space Filling Curve, GeoMesa, spatio-temporal fusion},
+year = {2015},
+doi = {10.1117/12.2177233},
+URL = {https://doi.org/10.1117/12.2177233}
+}  
 
 @inproceedings{yu_geospark:_2015,
   title = {{{GeoSpark}}: A Cluster Computing Framework for Processing Large-Scale Spatial Data},
@@ -670,35 +673,39 @@
 }
 
 @inproceedings{eldawy_spatialhadoop:_2014,
-  title = {{{SpatialHadoop}}: Towards Flexible and Scalable Spatial Processing Using Mapreduce},
-  isbn = {978-1-4503-2924-8},
-  shorttitle = {{{SpatialHadoop}}},
-  doi = {10.1145/2602622.2602625},
-  language = {en},
-  timestamp = {2016-12-08T17:53:35Z},
-  urldate = {2016-12-08},
-  publisher = {{ACM Press}},
-  author = {Eldawy, Ahmed},
-  year = {2014},
-  note = {00020},
-  pages = {46--50},
-  file = {p46-eldawy.pdf:/home/and/.mozilla/firefox/oz8qllgg.default/zotero/storage/GMXTXHE4/p46-eldawy.pdf:application/pdf}
+author = {Eldawy, Ahmed},
+title = {SpatialHadoop: Towards Flexible and Scalable Spatial Processing Using Mapreduce},
+year = {2014},
+isbn = {9781450329248},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/2602622.2602625},
+doi = {10.1145/2602622.2602625},
+abstract = {Recently, MapReduce frameworks, e.g., Hadoop, have been used extensively in different applications that include tera-byte sorting, machine learning, and graph processing. With the huge volumes of spatial data coming from different sources, there is an increasing demand to exploit the efficiency of Hadoop, coupled with the flexibility of the MapReduce framework, in spatial data processing. However, Hadoop falls short in supporting spatial data efficiently as the core is unaware of spatial data properties. This paper describes SpatialHadoop; a full-edged MapReduce framework with native support for spatial data. SpatialHadoop is a comprehensive extension to Hadoop that injects spatial data awareness in each Hadoop layer, namely, the language, storage, MapReduce, and operations layers. In the language layer, SpatialHadoop adds a simple and ex- pressive high level language for spatial data types and operations. In the storage layer, SpatialHadoop adapts traditional spatial index structures, Grid, R-tree and R+-tree, to form a two-level spatial index. SpatialHadoop enriches the MapReduce layer by two new components, SpatialFileSplitter and SpatialRecordReader, for efficient and scalable spatial data processing. In the operations layer, SpatialHadoop is already equipped with a dozen of operations, including range query, kNN, and spatial join. The flexibility and open source nature of SpatialHadoop allows more spatial operations to be implemented efficiently using MapReduce. Extensive experiments on a real system prototype and real datasets show that SpatialHadoop achieves orders of magnitude better performance than Hadoop for spatial data processing.},
+booktitle = {Proceedings of the 2014 SIGMOD PhD Symposium},
+pages = {46–50},
+numpages = {5},
+keywords = {indexing, spatial, hadoop, mapreduce},
+location = {Snowbird, Utah, USA},
+series = {SIGMOD'14 PhD Symposium}
 }
 
 @inproceedings{xie_simba:_2016-1,
-  title = {Simba: {{Efficient In}}-{{Memory Spatial Analytics}}},
-  isbn = {978-1-4503-3531-7},
-  shorttitle = {Simba},
-  doi = {10.1145/2882903.2915237},
-  language = {en},
-  timestamp = {2016-12-09T04:59:29Z},
-  urldate = {2016-12-08},
-  publisher = {{ACM Press}},
-  author = {Xie, Dong and Li, Feifei and Yao, Bin and Li, Gefei and Zhou, Liang and Guo, Minyi},
-  year = {2016},
-  note = {00000},
-  pages = {1071--1085},
-  file = {simba.pdf:/home/and/.mozilla/firefox/oz8qllgg.default/zotero/storage/XZJDJC4R/simba.pdf:application/pdf}
+author = {Xie, Dong and Li, Feifei and Yao, Bin and Li, Gefei and Zhou, Liang and Guo, Minyi},
+title = {Simba: Efficient In-Memory Spatial Analytics},
+year = {2016},
+isbn = {9781450335317},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/2882903.2915237},
+doi = {10.1145/2882903.2915237},
+abstract = {Large spatial data becomes ubiquitous. As a result, it is critical to provide fast, scalable, and high-throughput spatial queries and analytics for numerous applications in location-based services (LBS). Traditional spatial databases and spatial analytics systems are disk-based and optimized for IO efficiency. But increasingly, data are stored and processed in memory to achieve low latency, and CPU time becomes the new bottleneck. We present the Simba (Spatial In-Memory Big data Analytics) system that offers scalable and efficient in-memory spatial query processing and analytics for big spatial data. Simba is based on Spark and runs over a cluster of commodity machines. In particular, Simba extends the Spark SQL engine to support rich spatial queries and analytics through both SQL and the DataFrame API. It introduces indexes over RDDs in order to work with big spatial data and complex spatial operations. Lastly, Simba implements an effective query optimizer, which leverages its indexes and novel spatial-aware optimizations, to achieve both low latency and high throughput. Extensive experiments over large data sets demonstrate Simba's superior performance compared against other spatial analytics system.},
+booktitle = {Proceedings of the 2016 International Conference on Management of Data},
+pages = {1071–1085},
+numpages = {15},
+keywords = {spark SQL, in-memory computing, main-memory DBMS, big spatial data, spatial analytics, spark, spatial queries},
+location = {San Francisco, California, USA},
+series = {SIGMOD '16}
 }
 
 @article{lam_blue_2015,
@@ -768,8 +775,39 @@
   author = {Zheng, Yu and Xie, Xing and Ma, Wei-Ying},
   year = {2010},
   note = {00388},
-  pages = {32--39},
-  file = {GeoLife-A20Collaborative20Social20Networking20Service20among20User2C20Location20and20Trajectory.pdf:/home/and/.mozilla/firefox/oz8qllgg.default/zotero/storage/9G65KA6R/GeoLife-A20Collaborative20Social20Networking20Service20among20User2C20Location20and20Trajectory.pdf:application/pdf}
+  pages = {32--39}
 }
 
+@article{bron_algorithm_1973,
+	title = {Algorithm 457: finding all cliques of an undirected graph},
+	volume = {16},
+	issn = {0001-0782, 1557-7317},
+	shorttitle = {Algorithm 457},
+	url = {https://dl.acm.org/doi/10.1145/362342.362367},
+	doi = {10.1145/362342.362367},
+	language = {en},
+	number = {9},
+	urldate = {2020-10-09},
+	journal = {Communications of the ACM},
+	author = {Bron, Coen and Kerbosch, Joep},
+	month = sep,
+	year = {1973},
+	pages = {575--577}
+}
 
+@InProceedings{eppstein_listing_2010,
+    author="Eppstein, David
+    and L{\"o}ffler, Maarten
+    and Strash, Darren",
+    editor="Cheong, Otfried
+    and Chwa, Kyung-Yong
+    and Park, Kunsoo",
+    title="Listing All Maximal Cliques in Sparse Graphs in Near-Optimal Time",
+    booktitle="Algorithms and Computation",
+    year="2010",
+    publisher="Springer Berlin Heidelberg",
+    address="Berlin, Heidelberg",
+    pages="403--414",
+    abstract="The degeneracy of an n-vertex graph G is the smallest number d such that every subgraph of G contains a vertex of degree at most d. We show that there exists a nearly-optimal fixed-parameter tractable algorithm for enumerating all maximal cliques, parametrized by degeneracy. To achieve this result, we modify the classic Bron--Kerbosch algorithm and show that it runs in time O(dn3d/3). We also provide matching upper and lower bounds showing that the largest possible number of maximal cliques in an n-vertex graph with degeneracy d (when d is a multiple of 3 and n{\thinspace}≥{\thinspace}d{\thinspace}+{\thinspace}3) is (n{\thinspace}−{\thinspace}d)3d/3. Therefore, our algorithm matches the $\Theta$(d(n{\thinspace}−{\thinspace}d)3d/3) worst-case output size of the problem whenever n{\thinspace}−{\thinspace}d{\thinspace}={\thinspace}$\Omega$(n).",
+    isbn="978-3-642-17517-6"
+}

@@ -1,97 +1,3 @@
-%% bare_jrnl.tex
-%% V1.4b
-%% 2015/08/26
-%% by Michael Shell
-%% see http://www.michaelshell.org/
-%% for current contact information.
-%%
-%% This is a skeleton file demonstrating the use of IEEEtran.cls
-%% (requires IEEEtran.cls version 1.8b or later) with an IEEE
-%% journal paper.
-%%
-
-\documentclass[journal,onecolumn]{IEEEtran}
-%
-% If IEEEtran.cls has not been installed into the LaTeX system files,
-% manually specify the path to it like:
-% \documentclass[journal]{../sty/IEEEtran}
-
-\usepackage[pdftex]{graphicx}
-\usepackage{amsmath,amssymb,amsfonts,amsthm}
-\usepackage{algpseudocode}
-\usepackage{algorithm}
-\usepackage{xpatch}
-\usepackage{cite}
-\usepackage{tikz}
-\usetikzlibrary{shapes, arrows}
-
-\ifCLASSOPTIONcompsoc
-\usepackage[caption=false, font=normalsize, labelfont=sf, textfont=sf]{subfig}
-\else
-\usepackage[caption=false, font=footnotesize]{subfig}
-\fi
-
-\newtheorem{lemma}{Lemma}
-\renewcommand{\IEEEQED}{\IEEEQEDclosed}
-
-%\usepackage{array}
-%\usepackage[caption=false,font=normalsize,labelfont=sf,textfont=sf]{subfig}
-%\usepackage{url}
-
-\hyphenation{op-tical net-works semi-conduc-tor}
-
-%% For algorithms...
-\algrenewcommand\alglinenumber[1]{{\sffamily\footnotesize#1:}}
-\makeatletter
-\xpatchcmd{\algorithmic}{\itemsep\z@}{\itemsep=5pt}{}{}
-\makeatother
-\renewcommand{\algorithmicrequire}{\textbf{Input:}}
-\renewcommand{\algorithmicensure}{\textbf{Output:}}
-\renewcommand{\algorithmicforall}{\textbf{For Each}}
-
-% Define block styles for tikz...
-\tikzstyle{decision} = [diamond, draw, fill=blue!20, text width=4.5em, 
-    text centered, node distance=3cm, inner sep=0pt]
-\tikzstyle{block} = [rectangle, draw, fill=blue!20, text width=3cm, 
-    text centered, rounded corners, minimum height=4em]
-\tikzstyle{info} = [rectangle, scale=0.9, text width=5cm, minimum height=4em, node distance=4.75cm]
-\tikzstyle{line} = [draw, -latex']
-\tikzstyle{cloud} = [draw, ellipse,fill=red!20, node distance=3cm,
-    minimum height=2em]
-\tikzstyle{io} = [trapezium, trapezium left angle=70, trapezium right angle=110, 
-    minimum height=1cm, text centered, draw=black, fill=blue!30]
-
-\begin{document}
-% \title{_}
-% \author{_}
-% 
-% \maketitle
-
-\section{Introduction}
-Technology advances in last past decades have triggered an explosion in the capture of spatio-temporal data.  The increase popularity of GPS devices and smart-phones together with the emerging of new disciplines such as the Internet of Things and Satellite/UAS high-resolution imagery have made possible to collect vast amounts of data with a spatial and temporal component attached to them.
-
-Together with this, the interest to extract valuable information from such large databases has also appeared.  Spatio-temporal queries about most popular places or frequent events are still useful, but more complex patterns are recently shown an increase of interest.  In particular, those what describe group behaviour of moving objects through significant periods of time.  Moving cluster \cite{kalnis_discovering_2005}, convoys \cite{jeung_discovery_2008}, flocks \cite{gudmundsson_computing_2006} and swarm patterns \cite{li_swarm:_2010} are new movement patterns which unveil how entities move together during a minimum time interval. 
-
-Applications for this kind of information are diverse and interesting, in particular if they come in the way of trajectory datasets \cite{jeung_trajectory_2011, huang_mining_2015}. Case of studies range from transportation system management and urban planning \cite{di_lorenzo_allaboard:_2016} to Ecology \cite{la_sorte_convergence_2016}.  For instance, \cite{turdukulov_visual_2014} explore the finding of complex motion patterns to discover similarities between tropical cyclone paths.  Similarly, \cite{amor_persistence_2016} use eye trajectories to understand which strategies people use during a visual search. Also, \cite{holland_movements_1999} tracks the behavior of tiger sharks in the coasts of Hawaii in order to understand their migration patters.
-
-In particular, a moving flock pattern show how objects move close enough during a given time period.  Closeness is defined by a disk of a given radius where the entities must keep inside.  Given that the disk can be situated at any location, it is not a trivial problem.  In deed, \cite{gudmundsson_computing_2006} claims that find flock patterns where the same entities stay together during their duration is a NP-hard problem. \cite{vieira_2009} proposed the BFE algorithm which the first approach to be able to detect flock patterns in polynomial time.
-
-Despite the fact that much more data become available, state-of-the-art techniques to mine complex movement patterns still depict poor performance for big spatial data problems.  This work presents a parallel algorithm to discover moving flock patterns in large trajectory databases.  It is thought that new trends in distributed in-memory frameworks for spatial operations could help to speed up the detection of this kind of patterns.
-
-\section{Related work}
-Recently increase use of location-aware devices (such as GPS, Smart phones and RFID tags) has allowed the collection of a vast amount of data with a spatial and temporal component linked to them.  Different studies have focused in analyzing and mining this kind of collections \cite{leung_knowledge_2010, miller_geographic_2001}.  In this area, trajectory datasets have emerged as an interesting field where diverse kind of patterns can be identified \cite{zheng_computing_2011, vieira_spatio-temporal_2013}.  For instance, authors have proposed techniques to discover motion spatial patterns such as moving clusters \cite{kalnis_discovering_2005}, convoys \cite{jeung_discovery_2008} and flocks \cite{benkert_reporting_2008, gudmundsson_computing_2006}.  In particular, \cite{vieira_2009} proposed BFE (Basic Flock Evaluation), a novel algorithm to find moving flock patterns in polynomial time over large spatio-temporal datasets. 
-
-A flock pattern is defined as a group of entities which move together for a defined lapse of time \cite{benkert_reporting_2008}.  Applications to this kind of patterns are rich and diverse.  For example, \cite{calderon_romero_mining_2011} finds moving flock patterns in iceberg trajectories to understand their movement behavior and how they related to changes in ocean's currents. 
-
-The BFE algorithm presents an initial strategy in order to detect flock patterns.  In that, first it finds disks with a predefined diameter ($\varepsilon$) where moving entities could be close enough at a given time interval.  This is a costly operation due to the large number of points and intervals to be analyzed ($\mathcal{O}(2n^2)$ per time interval).  The technique uses a grid-based index and a stencil to speed up the process, but the complexity is still high.
-
-\cite{calderon_romero_mining_2011} and \cite{turdukulov_visual_2014} use a frequent pattern mining approach to improve performance during the combination of disks between time intervals.  Similarly, \cite{tanaka_improved_2016} introduce the use of plane sweeping along with binary signatures and inverted indexes to speedup the same process.  However, the above-mentioned methods still keep the same strategy as BFE to find the disks at each interval.  
-
-\cite{arimura_finding_2014} and \cite{geng_enumeration_2014} use depth-first algorithms to analyze the time intervals of each trajectory to report maximal duration flocks.  However, these techniques are not suitable to find patterns in an on-line fashion.
-
-Given the high complexity of the task, it should not be surprising the use of parallelism to increase performance.  \cite{fort_parallel_2014} use extreme and intersection sets to report maximal, longest and largest flocks on the GPU with the limitations of its memory model.  
-
-Indeed, despite the popularity of cluster computing frameworks (in particular whose supporting spatial capabilities \cite{eldawy_spatialhadoop:_2014, yu_demonstration_2016, pellechia_geomesa:_2015-1, xie_simba:_2016-1}) there are not significant advances in this area.  At the best of our knowledge, this work is the first to explore in-memory distributed systems towards the detection of moving flock patterns.
 
 \section{Methods}
 %\IEEEPARstart{T}{his} 
@@ -247,63 +153,54 @@ A disk with its center laying in the expansion zone or outside of it can be disc
     \caption{Merging strategy.}\label{fig:merge}
 \end{figure}
 
+\subsection{Additional improvements during local execution}
+Even the partition strategy could reduce the size of the points to be processed at each local partition , it is possible to introduce some filter techniques which allows to reduce the the impact in the creation of centers and disks.  This section explains the use of maximal cliques and minimum bounding circles (MBC) techniques as heuristics to improve the finding of disk at local level.
+
+In graph theory, a clique is subset of vertices forming a subgraph where all of their nodes share connections among them.  It is said that the induce subgraph is complete.  Similarly, a maximal clique happens when no additional vertex can be included in the current clique, that is, there is not a superset of vertices which could include the current clique \cite{bron_algorithm_1973}.  Although it is know that finding all maximal cliques is a problem of high complexity, studies claims that working on relatively small real-worlds graphs they can be found in near-optimal time \cite{eppstein_listing_2010}.
+
+Now, in our approach, it can be noted that after obtaining the set of pairs at the beginning of the BFE algorithm, we can see the result as a graph where the points are the vertices and the connections between nearby points as the edges.  So it is possible to run an algorithm (i.e. Bron-Kerbosch) over that graph to get a set of maximal cliques.
+
+The advantage to find a set of cliques is that we will have access to set of points inside of each clique that by sure must generate one or more disks.  Given the condition of the maximal cliques, all the points inside them are $\varepsilon$ distance each other, and we can know that no other point must be included because that contradicts the definition of a maximal clique.  That constitutes a kind of sub-partitioning technique where we could do additional processing. For example, a simple filter we can apply is to remove those cliques which number of points are less than the $mu$ parameter given that those cliques will be unable to generate disks that fulfill that condition.
+
+To introduce the next filter we need define the concept of minimum bounding circle (MBC).
+
+
+%% TODO
+% [x] The aim of that is get set of points where we know have to disks. 
+% [x] If we are able we can prune those that less than mu.  
+% [ ] Also we can run MBC to detect disks that cover all the points in the clique so we do not to run the center computation.
+
+\begin{figure}[!ht]
+    \centering
+    \resizebox{0.5\textwidth}{!}{
+    \begin{tikzpicture}[node distance = 2cm, auto, scale=0.75]
+        % Place nodes
+        \node [block] (graph) {Build graph};
+        \node [cloud, left of=graph, node distance=3cm] (input) {$\mathcal{P}$, $\varepsilon$, $\mu$};
+        \node [block, below of=graph] (cliques) {Compute cliques};
+        \node [block, below of=cliques] (filter) {Remove cliques $< \mu$};
+        \node [decision, below of=filter] (decide) {Unique MBC encloses clique?};
+        \node [io, right of=decide, node distance=5cm] (disks1) {disks1};
+        \node [block, left of=decide, node distance=5cm, text width=8em] (traditional) {Apply traditional approach at each clique};
+        \node [io, below of=traditional] (disks2) {disks2};
+        \node [io, below of=decide, node distance=4cm] (disks) {disks1 + disks2};
+        \node [block, below of=disks] (prune) {Prune disks};
+        \node [cloud, left of=prune, node distance=3cm] (maximals) {$\mathcal{D}$};
+        % Draw edges
+        \path [line,dashed] (input) -- (graph);
+        \path [line] (graph) -- (cliques);
+        \path [line] (cliques) -- (filter);
+        \path [line] (filter) -- (decide);
+        \path [line] (decide) -- node [near start] {yes} (disks1);
+        \path [line] (decide) -- node [near start] {no}  (traditional);
+        \path [line] (traditional) -- (disks2);
+        \path [line] (disks1) |- (disks);
+        \path [line] (disks2) |- (disks);
+        \path [line] (disks) -- (prune);
+        \path [line,dashed] (prune) -- (maximals);
+    \end{tikzpicture}
+    }
+    \caption{Flow chart for the maximal clique and MBC filters.}\label{fig:CMBC_flowchart}
+\end{figure}
+
 \end{itemize}
-
-\newpage 
-
-\appendices
-\section{Center computation.}\label{app:centers}
-
-\alglanguage{pseudocode}
-\begin{algorithm}
-    \caption{Find the centers of given radius which circumference laid on the two input points.}
-    \begin{algorithmic}[1]
-        \Require Radius $\frac{\varepsilon}{2}$ and points $p_1$ and $p_2$.
-        \Ensure Centers $c_1$ and $c_2$.
-        
-        \Function{FindCenters}{$p_1$, $p_2$, $\frac{\varepsilon}{2}$}
-        \State $r^2 \gets (\frac{\varepsilon}{2})^2$
-        \State $X \gets p_1.x - p_2.x$
-        \State $Y \gets p_1.y - p_2.y$
-        \State $d^2 \gets X^2 + Y^2$
-        \State $R \gets \sqrt{\lvert 4 \times \frac{r^2}{d^2} - 1 \rvert}$
-        \State $c_1.x \gets X + \frac{Y \times R}{2} + p_2.x$
-        \State $c_1.y \gets Y - \frac{X \times R}{2} + p_2.y$
-        \State $c_2.x \gets X - \frac{Y \times R}{2} + p_2.x$
-        \State $c_2.y \gets Y + \frac{X \times R}{2} + p_2.y$
-        
-        \State \Return $c_1$ and $c_2$
-        \EndFunction
-    \end{algorithmic}
-\end{algorithm}
-
-\newpage
-
-\section{Disk pruning.}\label{app:disks}
-
-\begin{algorithm}
-    \caption{Prune disks which are duplicate or subset of others.}
-    \begin{algorithmic}[1]
-        \Require Set of disks $D$.
-        \Ensure Set of disks $D^{\prime}$ without duplicate or subsets.
-        
-        \Function{pruneDisks}{$D$}
-        \State $E \gets \varnothing$
-        \ForAll{disk $d_i$ in $D$}
-            \State $N \gets d_i \cap D$
-            \ForAll{disk $n_j$ in $N$}
-                \If{$d_i$ contains all the elements of $n_j$}
-                        \State $E \gets E \cup {n_j}$
-                \EndIf
-            \EndFor
-        \EndFor        
-        \State $D^{\prime} \gets D \setminus E$
-        \State \Return $D^{\prime}$
-        \EndFunction
-    \end{algorithmic}
-\end{algorithm}
-
-\bibliographystyle{IEEEtran}
-\bibliography{pflocks.bib}
-
-\end{document}
