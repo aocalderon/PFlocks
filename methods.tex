@@ -154,21 +154,26 @@ A disk with its center laying in the expansion zone or outside of it can be disc
 \end{figure}
 
 \subsection{Additional improvements during local execution}
-Even the partition strategy could reduce the size of the points to be processed at each local partition , it is possible to introduce some filter techniques which allows to reduce the the impact in the creation of centers and disks.  This section explains the use of maximal cliques and minimum bounding circles (MBC) techniques as heuristics to improve the finding of disk at local level.
+Even the partition strategy could reduce the size of the points to be processed at each local partition , it is possible to introduce some filter techniques which allows to reduce the impact in the creation of centers and disks and subsequent pruning.  This section explains the use of maximal cliques and minimum bounding circles (MBC) techniques as heuristics to improve the finding of disk at local level.
 
-In graph theory, a clique is subset of vertices forming a subgraph where all of their nodes share connections among them.  It is said that the induce subgraph is complete.  Similarly, a maximal clique happens when no additional vertex can be included in the current clique, that is, there is not a superset of vertices which could include the current clique \cite{bron_algorithm_1973}.  Although it is know that finding all maximal cliques is a problem of high complexity, studies claims that working on relatively small real-worlds graphs they can be found in near-optimal time \cite{eppstein_listing_2010}.
+In graph theory, a clique is a subset of vertices forming a subgraph where all of their nodes share connections among them.  It is said that the induced subgraph is complete.  Similarly, a maximal clique happens when no additional vertex can be included in the current clique, that is, there is not a superset of vertices which could include the current clique \cite{bron_algorithm_1973}.  Although it is know that finding all maximal cliques is a problem of high complexity, studies claims that working on relatively small real-worlds graphs, they can be found in near-optimal time \cite{eppstein_listing_2010}.
 
-Now, in our approach, it can be noted that after obtaining the set of pairs at the beginning of the BFE algorithm, we can see the result as a graph where the points are the vertices and the connections between nearby points as the edges.  So it is possible to run an algorithm (i.e. Bron-Kerbosch) over that graph to get a set of maximal cliques.
+Now, in our approach, it can be noted that after obtaining the set of pairs at the beginning of the BFE algorithm, we can see the result as a graph where the points are the vertices and the connections between nearby points are the edges.  So it is possible to run an algorithm (i.e. Bron-Kerbosch) over that graph to get a set of maximal cliques.
 
 The advantage to find a set of cliques is that we will have access to set of points inside of each clique that by sure must generate one or more disks.  Given the condition of the maximal cliques, all the points inside them are $\varepsilon$ distance each other, and we can know that no other point must be included because that contradicts the definition of a maximal clique.  That constitutes a kind of sub-partitioning technique where we could do additional processing. For example, a simple filter we can apply is to remove those cliques which number of points are less than the $mu$ parameter given that those cliques will be unable to generate disks that fulfill that condition.
 
-To introduce the next filter we need define the concept of minimum bounding circle (MBC).
+To introduce the next filter we need define the concept of minimum bounding circle (MBC).  Algorithms for MBC finding aims to return the center and minimum radius possible of a circle that encloses all the items of a set of points in the plane.  One of the most representative algorithm is proposed at \cite{welzl_mbc_1991} which is able to solve the problem in linear time.
 
+The intention to use MBC algorithms at this stage is to detect maximal cliques where all their points can be enclosed in one single disk.  If that is the case, we could report directly the MBC result and save the costly computation of finding centers and pruning duplicates.  This can bring important improvements especially in datasets where the density of points is high. 
+
+However, we have to clarify that when an unique MBC to cover all the points is not possible, the traditional steps (BFE algorithm) should be applied over them.  Finally, disks from both branches are unified and a final pruning is done to remove possible duplication.  This final step should not be costly because most of the pruning is done at maximal clique level.
+
+Figure \ref{fig:CMBC_flowchart} shows a schematic flow chart of the steps for this alternative.
 
 %% TODO
-% [x] The aim of that is get set of points where we know have to disks. 
-% [x] If we are able we can prune those that less than mu.  
-% [ ] Also we can run MBC to detect disks that cover all the points in the clique so we do not to run the center computation.
+% [x] The aim of that is get set of points where we know must be disks. 
+% [x] We can prune those that are less than mu.  
+% [x] Also we can run MBC to detect disks that cover all the points in the clique so we do not to run the center computation there.
 
 \begin{figure}[!ht]
     \centering
