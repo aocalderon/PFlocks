@@ -8,39 +8,9 @@ The alternatives we will discuss later follows closely the steps explained at \c
 
 The main inputs of the BFE algorithm are a set of points, a minimum distance $\varepsilon$ which will define the diameter of the disks where the moving entities should lay, a minimum number of entities $\mu$ at each disk and a minimum duration $\delta$ which is the minimum number of time units the entities should be keep together to be considered a flock.  Based on these inputs,  figure \ref{fig:MF_flowchart} breaks down schematically the work flow  of this phase where we can identify 4 general steps.  The main goal of this phase is to find a set of valid disks at each time instant to allow further combinations with subsequent sets of disks coming in the future.
 
-\begin{figure}[!ht]
+\begin{figure}
     \centering
-    \begin{tikzpicture}[node distance = 2cm, auto]
-        % Place nodes
-        \node [block] (pairs) {Find pairs};
-        \node [cloud, node distance=4cm, left of=pairs] (input) {$\mathcal{P}$, $\varepsilon$, $\mu$};
-        \node [block, below of=pairs] (centers) {Compute centers};
-        \node [block, below of=centers] (disks) {Find disks};
-        \node [block, below of=disks] (maximals) {Prune duplicate and subset disks};
-        \node [cloud, node distance=4cm, left of=maximals] (output) {$\mathcal{D}$};
-        % Info nodes
-         \node [info, right of=pairs] (pairs_info) {
-            \textbullet \hspace{0.1em} Query: $\mathcal{P}\;p_1 \bowtie_{\varepsilon} \mathcal{P}\;p_2$ \\
-            \textbullet \hspace{0.1em} Filter: $p_1.id < p_2.id$ 
-         };
-        \node [info, right of=centers] (centers_info) { 
-            \textbullet \hspace{0.1em} See listing at appendix \ref{app:centers}
-        };
-        \node [info, right of=disks] (disks_info) {
-            \textbullet \hspace{0.1em} Query: $\mathcal{P} \bowtie_{\frac{\varepsilon}{2}} \mathcal{C}$ \\
-            \textbullet \hspace{0.1em} Filter: $disk.size \geq \mu $ 
-         };
-        \node [info, right of=maximals] (maximals_info) { 
-            \textbullet \hspace{0.1em} See listing at appendix \ref{app:disks} 
-        };
-        % Draw edges
-        \path [line,dashed] (input) -- (pairs);
-        \path [line] (pairs) -- (centers);
-        \path [line] (centers) -- (disks);
-        \path [line] (disks) -- (maximals);
-        \path [line,dashed] (maximals) -- (output);
-    \end{tikzpicture}
-    
+    \includegraphics[width=\linewidth]{figures/MF_flowchart}
     \caption{General steps in phase 1 of the BFE algorithm.}\label{fig:MF_flowchart}
 \end{figure}
 
@@ -62,33 +32,9 @@ It is important to note that BFE also proposes a grid index structure in this ph
 
 The second phase is more straightforward.  Figure \ref{fig:FF_flowchart} explains schematically what is done once the set of current disks (as explained in figure \ref{fig:MF_flowchart}) is found at every time instant.  This phase performs a recursion using the current set of disks and the previous set of flocks which comes from the  previous time instant.  Due to we do not know where and how far a group of entities can move in the next time instant, a cross product between both sets is required.  
 
-\begin{figure}[!ht]
+\begin{figure}
     \centering
-    \begin{tikzpicture}[node distance = 2cm, auto]
-        % Place nodes
-        \node [block] (combine) {Combine current disks with previous flocks};
-        \node [cloud, left of=combine, node distance=5cm] (input) 
-            {$\mathcal{D}_t$, $\mathcal{F}_{t-1}$, $\mu$, $\delta$};
-        \node [block, below of=combine] (extend) {Extend duration of matched flocks};
-        \node [decision, below of=extend] (decide) {$flock$\\$.duration$\\$\geq \delta$};
-        \node [io, right of=decide, node distance=5cm] (report) {Report flocks};
-        \node [cloud, left of=decide, node distance=4cm] (output) {$\mathcal{F}_t$};
-        % Info nodes
-         \node [info, right of=combine, node distance=5.5cm, text width=7cm] (combine_info) {
-            \textbullet \hspace{0.1em} Query: $disks\;\mathcal{D}_t \times flocks\;\mathcal{F}_{t-1}$ \\
-            \textbullet \hspace{0.1em} Filter: $\mathcal{D}_{t}.entities \bigcap \mathcal{F}_{t-1}.entities \geq \mu$ 
-         };
-         \node [info, right of=extend, node distance=5.5cm, text width=7cm] (extend_info) {
-            \textbullet \hspace{0.1em} $flock.end \gets t$ \\
-            \textbullet \hspace{0.1em} $flock.duration \gets flock.end - flock.start$ 
-         };        
-         % Draw edges
-        \path [line,dashed] (input) -- (combine);
-        \path [line] (combine) -- (extend);
-        \path [line] (extend) -- (decide);
-        \path [line] (decide) -- node [near start] {yes} (report);
-        \path [line, dashed] (decide) -- node [near start] {no}  (output);
-    \end{tikzpicture}
+    \includegraphics[width=\linewidth]{figures/FF_flowchart}
     \caption{Steps in BFE phase two. Combination, extension and reporting of flocks.}\label{fig:FF_flowchart}
 \end{figure}
 
@@ -98,7 +44,7 @@ Similarly, figure \ref{fig:FF_stages} illustrates the recursion and how the set 
 
 \begin{figure}[!ht]
     \centering
-    \includegraphics[width=0.75\textwidth]{figures/FF_stages}
+    \includegraphics[width=\linewidth]{figures/FF_stages}
     \caption{BFE phase 2 example explaining the recursion of the set of flocks along time instants and the initial conditions.}\label{fig:FF_stages}
 \end{figure}
 
@@ -107,11 +53,11 @@ There are some steps during the execution of BFE which are particularly affected
 
 \cite{vieira_2009} claims that the number of centers, and consequent disks, to be evaluated is equal to $2\lvert\tau\rvert^2$ where $\tau$ is the number of trajectories.  However, our experience show that there are a large number of duplicate and subset disks which are later pruned in the final stage.  This behaviour is exacerbated no just in very large datasets but also in those with areas with high density of moving entities.
 
-\begin{figure}[!ht]
+\begin{figure*}
     \centering
-    \includegraphics[width=1\textwidth]{figures/MF_stages/flow}
+    \includegraphics[width=\linewidth]{figures/MF_stages/flow}
     \caption{Example of BFE execution on a sample dataset.}\label{fig:example}
-\end{figure}
+\end{figure*}
 
 As solution for this issue, we proposed a partition strategy to divide the study area in smaller sections which can be evaluated in parallel.  The strategy has three steps: first, a partition and replication stage, then the flock discovery in each local partition and finally the merge stage where we collect and unify the results.  Let's explain each stage in more detail:
 
@@ -119,9 +65,9 @@ As solution for this issue, we proposed a partition strategy to divide the study
 
 \item Partition and Replication: Figure \ref{fig:partrep} shows a brief example of the partition and replication stage.  Note that it is possible to use different types of spatial indexes (grids, r-tree, quadtree, etc.) to create spatial partitions over the input dataset.  In the case of the example we use a quadtree which creates 7 partitions.  Now, we need to ensure that each partition has access to all the required data to complete the finding of flocks locally.  To accomplish this, all the points laying at $\varepsilon$ distance of the border of its partition are replicated to adjacent partitions.  At the right of figure \ref{fig:partrep},  it can be seen each partition surrounded by a dotted area with the points which need to be copied from its neighbor partitions.  At this point, each partition is ready to be submitted to different nodes for local processing.
 
-\begin{figure}[!ht]
+\begin{figure}
     \centering
-    \includegraphics[width=\textwidth]{figures/MF_stages/P123}
+    \includegraphics[width=\linewidth]{figures/MF_stages/P123}
     \caption{An example of partitioning and replication on a sample dataset.}\label{fig:partrep}
 \end{figure}
 
@@ -141,17 +87,17 @@ A disk with its center laying in the expansion zone or outside of it can be disc
   From here, it will be clear that there is a symmetric relation between the disks in the border and expansion zones in the current partition and the disks in its replicated partition.  We can certainly said that if a disk is located in the border zone of the current partition, it will be located in the expansion zone of its replicated partition.  Similarly, any disk with a center laying outside of the expansion zone of the current partition will be located in the safe zone of its replicated partition.  Keeping just the disks with centers laying in the current partition (border or safe zone) will be enough to ensure no lost of information (Fig. \ref{subfig:mergeB}).
 \end{proof}
 
-\begin{figure}[!ht]
+\begin{figure*}
     \centering
-    \subfloat[Disks in current and replicated partitions. \label{subfig:mergeA}]{%
-        \includegraphics[width=0.48\textwidth, page=3]{figures/merge}
+    \subfloat[\label{subfig:mergeA}]{%
+        \includegraphics[width=0.48\linewidth, page=3]{figures/merge}
     }
     \hfill
-    \subfloat[Disks in current and replicated partitions after pruning. \label{subfig:mergeB}]{%
-        \includegraphics[width=0.48\textwidth, page=4]{figures/merge}
+    \subfloat[\label{subfig:mergeB}]{%
+        \includegraphics[width=0.48\linewidth, page=4]{figures/merge}
     }
     \caption{Merging strategy.}\label{fig:merge}
-\end{figure}
+\end{figure*}
 
 \subsection{Additional improvements during local execution}
 Even the partition strategy could reduce the size of the points to be processed at each local partition , it is possible to introduce some filter techniques which allows to reduce the impact in the creation of centers and disks and subsequent pruning.  This section explains the use of maximal cliques and minimum bounding circles (MBC) techniques as heuristics to improve the finding of disk at local level.
@@ -170,36 +116,9 @@ However, we have to clarify that when an unique MBC to cover all the points is n
 
 Figure \ref{fig:CMBC_flowchart} shows a schematic flow chart of the steps for this alternative.
 
-\begin{figure}[!ht]
+\begin{figure}
     \centering
-    \resizebox{0.5\textwidth}{!}{
-    \begin{tikzpicture}[node distance = 2cm, auto, scale=0.75]
-        % Place nodes
-        \node [block] (graph) {Build graph};
-        \node [cloud, left of=graph, node distance=3cm] (input) {$\mathcal{P}$, $\varepsilon$, $\mu$};
-        \node [block, below of=graph] (cliques) {Compute cliques};
-        \node [block, below of=cliques] (filter) {Remove cliques $< \mu$};
-        \node [decision, below of=filter] (decide) {Unique MBC encloses clique?};
-        \node [io, right of=decide, node distance=5cm] (disks1) {disks1};
-        \node [block, left of=decide, node distance=5cm, text width=8em] (traditional) {Apply traditional approach at each clique};
-        \node [io, below of=traditional] (disks2) {disks2};
-        \node [io, below of=decide, node distance=4cm] (disks) {disks1 + disks2};
-        \node [block, below of=disks] (prune) {Prune disks};
-        \node [cloud, left of=prune, node distance=3cm] (maximals) {$\mathcal{D}$};
-        % Draw edges
-        \path [line,dashed] (input) -- (graph);
-        \path [line] (graph) -- (cliques);
-        \path [line] (cliques) -- (filter);
-        \path [line] (filter) -- (decide);
-        \path [line] (decide) -- node [near start] {yes} (disks1);
-        \path [line] (decide) -- node [near start] {no}  (traditional);
-        \path [line] (traditional) -- (disks2);
-        \path [line] (disks1) |- (disks);
-        \path [line] (disks2) |- (disks);
-        \path [line] (disks) -- (prune);
-        \path [line,dashed] (prune) -- (maximals);
-    \end{tikzpicture}
-    }
+    \includegraphics[width=\linewidth]{figures/CMBC_flowchart}
     \caption{Flow chart for the maximal clique and MBC filters.}\label{fig:CMBC_flowchart}
 \end{figure}
 
