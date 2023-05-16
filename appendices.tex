@@ -2,7 +2,7 @@
 \appendix
 
 \section{Center computation.}
-\begin{algorithm}[!ht]\label{app:centers}
+\begin{algorithm}
     \caption{Find the centers of given radius which circumference laid on the two input points.}
     \begin{algorithmic}[1]
         \Require Radius $\frac{\varepsilon}{2}$ and points $p_1$ and $p_2$.
@@ -22,10 +22,11 @@
         \State \Return $c_1$ and $c_2$
         \EndFunction
     \end{algorithmic}
+    \label{app:centers}
 \end{algorithm}
 
 \section{Disk pruning.}
-\begin{algorithm}\label{app:disks}
+\begin{algorithm}
     \caption{Prune disks which are duplicate or subset of others.}
     \begin{algorithmic}[1]
         \Require Set of disks $D$.
@@ -45,4 +46,5 @@
         \State \Return $D^{\prime}$
         \EndFunction
     \end{algorithmic}
+    \label{app:disks}
 \end{algorithm}
