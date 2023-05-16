@@ -21,7 +21,7 @@
         \node [cloud, left of=combine] (input) {$\mathcal{D}_t$, $\mathcal{F}_{t-1}$, $\mu$, $\delta$};
         \node [block, below of=combine] (extend) {Extend duration of matched flocks};
         \node [decision, below of=extend] (decide) {Flock duration equal to $\delta$?};
-        \node [io, right of=decide, node distance=5cm] (report) {Report flocks};
+        \node [io, below of=decide, node distance=2.5cm] (report) {Report flocks};
         \node [cloud, left of=decide] (output) {$\mathcal{F}_t$};
         % Info nodes
          \node [info, right of=combine] (combine_info) {
