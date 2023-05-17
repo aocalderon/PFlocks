@@ -26,7 +26,7 @@ It is important to note that BFE also proposes a grid index structure in this ph
 
 \begin{figure}
     \centering
-    \includegraphics[clip,trim=13cm 21.75cm 4.1cm 1.85cm]{figures/grid}
+    \includegraphics[clip,trim=13cm 21.9cm 4.1cm 1.9cm, width=0.5\linewidth]{figures/grid}
     \caption{The grid-based index structure proposed at \cite{vieira_2009}.}\label{fig:grid}
 \end{figure}
 
@@ -75,29 +75,23 @@ As solution for this issue, we proposed a partition strategy to divide the study
 
 \item Merging:  In order to merge back the results we will have to pay special attention to disks laying close to the border of each partition.  We will show that if the position of disk centers lay inside of the current partition they will be safe to operate but those located in the expansion zone or outside of it will require to be treated to avoid duplicate reports.  
 
-Disks with centers in the expansion zone will be repeated in contiguous partitions and, therefore, they will lead to duplication.  In addition, it is possible that pairs of points generates disks with centers outside of the expansion zone.  For example, Fig. \ref{subfig:mergeA} illustrates the case.  Disks $a^\prime$ and $b^\prime$ are generated for points in partitions 1 and 2 respectively, however both are located outside of their expansion zone boundaries and we should to avoid to report them twice.  We present lemma \ref{lemma:disks} to show that we can safely remove those kind of disks.
+Disks with centers in the expansion zone will be repeated in contiguous partitions and, therefore, they will lead to duplication.  In addition, it is possible that pairs of points generates disks with centers outside of the expansion zone.  For example, Fig. \ref{fig:ensuring} illustrates the case.  Disks $a^\prime$ and $b^\prime$ are generated for points in partitions 1 and 2 respectively, however both are located outside of their expansion zone boundaries and we should to avoid to report them twice.  We present lemma \ref{lemma:disks} to show that we can safely remove those kind of disks.
 
 \begin{lemma}\label{lemma:disks}
 A disk with its center laying in the expansion zone or outside of it can be discarded as they will be correctly evaluated by one of the partitions in its neighborhood. 
 \end{lemma}
 
 \begin{proof}
-  In order to support our proof we will define some concepts:  First, we will divide the area of a partition in three zones to clarify our assumptions:  we already talked about the \textit{expansion zone} as the area beyond the border of a partition (between black line and dotted red line in figure \ref{subfig:mergeA}) and a width equal to $\varepsilon$.  The \textit{border zone} is a strip of width equal to $\varepsilon$ touching the interior border of a partition.  In figure \ref{subfig:mergeA}, it is compromised by the dotted blue and the black lines.  The \textit{safe zone} will be the remaining internal area in the partition which is not covered by the border zone.  Second, we will call the contiguous partition which replicate a particular disk with the current one as the \textit{replicated partition}. In figure \ref{subfig:mergeA}, the partition 2 is the replicated partition of partition 1 and vice versa.
+  In order to support our proof we will define some concepts:  First, we will divide the area of a partition in three zones to clarify our assumptions:  we already talked about the \textit{expansion zone} as the area beyond the border of a partition (between black line and dotted red line in figure \ref{fig:ensuring}) and a width equal to $\varepsilon$.  The \textit{border zone} is a strip of width equal to $\varepsilon$ touching the interior border of a partition.  In figure \ref{fig:ensuring}, it is compromised by the dotted blue and the black lines.  The \textit{safe zone} will be the remaining internal area in the partition which is not covered by the border zone.  Second, we will call the contiguous partition which replicate a particular disk with the current one as the \textit{replicated partition}. In figure \ref{fig:ensuring}, the partition 2 is the replicated partition of partition 1 and vice versa.
 
-  From here, it will be clear that there is a symmetric relation between the disks in the border and expansion zones in the current partition and the disks in its replicated partition.  We can certainly said that if a disk is located in the border zone of the current partition, it will be located in the expansion zone of its replicated partition.  Similarly, any disk with a center laying outside of the expansion zone of the current partition will be located in the safe zone of its replicated partition.  Keeping just the disks with centers laying in the current partition (border or safe zone) will be enough to ensure no lost of information (Fig. \ref{subfig:mergeB}).
+  From here, it will be clear that there is a symmetric relation between the disks in the border and expansion zones in the current partition and the disks in its replicated partition.  We can certainly said that if a disk is located in the border zone of the current partition, it will be located in the expansion zone of its replicated partition.  Similarly, any disk with a center laying outside of the expansion zone of the current partition will be located in the safe zone of its replicated partition.  Keeping just the disks with centers laying in the current partition (border or safe zone) will be enough to ensure no loss of information.
 \end{proof}
 
-\begin{figure*}
+\begin{figure}
     \centering
-    \subfloat[\label{subfig:mergeA}]{%
-        \includegraphics[width=0.48\linewidth, page=3]{figures/merge}
-    }
-    \hfill
-    \subfloat[\label{subfig:mergeB}]{%
-        \includegraphics[width=0.48\linewidth, page=4]{figures/merge}
-    }
-    \caption{Merging strategy.}\label{fig:merge}
-\end{figure*}
+    \includegraphics[width=\linewidth, page=3]{figures/merge}
+    \caption{Ensuring no lost of data in safe zone and expansion area.}\label{fig:ensuring}
+\end{figure}
 
 \subsection{Additional improvements during local execution}
 Even the partition strategy could reduce the size of the points to be processed at each local partition , it is possible to introduce some filter techniques which allows to reduce the impact in the creation of centers and disks and subsequent pruning.  This section explains the use of maximal cliques and minimum bounding circles (MBC) techniques as heuristics to improve the finding of disk at local level.
