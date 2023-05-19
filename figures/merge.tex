@@ -101,7 +101,7 @@
 % Page 3
 \begin{page}
   \begin{tikzpicture}
-    \draw[step=1, ultra thin, light-gray, dashed] (\x - \epsilon, \y - \epsilon) grid (\x + \width + \gap + \width + \epsilon, \y + \width + \epsilon);
+    %\draw[step=1, ultra thin, light-gray, dashed] (\x - \epsilon, \y - \epsilon) grid (\x + \width + \gap + \width + \epsilon, \y + \width + \epsilon);
 
     \draw[dashed, red]  (\x - \epsilon, \y - \epsilon) rectangle (\x + \width + \epsilon, \y + \width + \epsilon);
     \draw (\x, \y) rectangle (\x + \width, \y + \width);
@@ -129,8 +129,6 @@
 
     \draw[Olive] (10 + \epsilon / 2, 7) circle (\epsilon / 2);   \node[center] at (10 + \epsilon / 2, 7) {};
     \draw[Olive] (10 - \epsilon / 2, 7) circle (\epsilon / 2);   \node[center] at (10 - \epsilon / 2, 7) {};
-
-
 
     \draw[Orange] (9 + \epsilon / 2, 5) circle (\epsilon / 2); \node[center] at  (9 + \epsilon / 2 , 5) {};
     \draw[Orange] (9 - \epsilon / 2, 5) circle (\epsilon / 2); \node[center] at  (9 - \epsilon / 2 , 5) {};
